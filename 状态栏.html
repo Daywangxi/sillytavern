@@ -1,0 +1,816 @@
+<html>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<body>
+<style>
+  /* ===== 主题变量体系 ===== */
+  :root {
+    /* 默认：纸墨风格 (Paper) — 终端变体 */
+    --bg:            #1e1c18;
+    --bg-dark:       #161410;
+    --panel-bg:      #262420;
+    --text:          #c8c0a8;
+    --text-dim:      #8a8470;
+    --text-light:    #6a6450;
+    --border:        #3a3628;
+    --border-light:  #2e2a1e;
+    --accent:        #c4a03c;
+    --accent-light:  #d8b85a;
+    --accent-dark:   #9a7a2a;
+    --bar-st:        #6b8c5e;
+    --bar-fd:        #c4803a;
+    --bar-wt:        #5a8ca0;
+    --danger:        #b04a3a;
+    --warn:          #c4803a;
+    --shadow:        rgba(0,0,0,.4);
+    --card-shadow:   rgba(0,0,0,.5);
+    --card-suit:     rgba(180,150,100,.12);
+    --card-bg-front: #2a2822;
+    --card-bg-back:  #1e1c18;
+    --tag-bg:        rgba(180,150,100,.12);
+    --btn-bg:        rgba(180,150,100,.2);
+    --btn-hover:     rgba(180,150,100,.35);
+    --btn-color:     #3a3628;
+    font-size: 14px;
+  }
+
+  /* 深蓝夜 (Midnight) — 终端变体 */
+  body[data-theme="midnight"] {
+    --bg:            #0e121e;
+    --bg-dark:       #0a0e18;
+    --panel-bg:      #161c30;
+    --text:          #a8b8d8;
+    --text-dim:      #6878a0;
+    --text-light:    #485878;
+    --border:        #1e2850;
+    --border-light:  #161e40;
+    --accent:        #5a8ad0;
+    --accent-light:  #7ab0f0;
+    --accent-dark:   #2a5090;
+    --bar-st:        #5a9a6a;
+    --bar-fd:        #c4803a;
+    --bar-wt:        #4a7ab0;
+    --danger:        #d04a3a;
+    --warn:          #d0903a;
+    --shadow:        rgba(0,0,0,.5);
+    --card-shadow:   rgba(0,0,0,.6);
+    --card-suit:     rgba(90,138,208,.08);
+    --card-bg-front: #1a2040;
+    --card-bg-back:  #0e121e;
+    --tag-bg:        rgba(90,138,208,.12);
+    --btn-bg:        rgba(90,138,208,.15);
+    --btn-hover:     rgba(90,138,208,.3);
+    --btn-color:     #1e2850;
+  }
+
+  /* 秋日枫 (Autumn) — 终端变体 */
+  body[data-theme="autumn"] {
+    --bg:            #1e1610;
+    --bg-dark:       #16100a;
+    --panel-bg:      #2a1e14;
+    --text:          #c8a880;
+    --text-dim:      #907050;
+    --text-light:    #6a5040;
+    --border:        #4a3020;
+    --border-light:  #3a2418;
+    --accent:        #d08030;
+    --accent-light:  #e0a050;
+    --accent-dark:   #a06020;
+    --bar-st:        #7a8a6a;
+    --bar-fd:        #d08030;
+    --bar-wt:        #6a7a8a;
+    --danger:        #c04a2a;
+    --warn:          #c08030;
+    --shadow:        rgba(0,0,0,.5);
+    --card-shadow:   rgba(0,0,0,.55);
+    --card-suit:     rgba(208,128,48,.08);
+    --card-bg-front: #2a1e14;
+    --card-bg-back:  #1e1610;
+    --tag-bg:        rgba(208,128,48,.12);
+    --btn-bg:        rgba(208,128,48,.15);
+    --btn-hover:     rgba(208,128,48,.3);
+    --btn-color:     #4a3020;
+  }
+
+  /* 翡翠林 (Forest) — 终端变体 */
+  body[data-theme="forest"] {
+    --bg:            #0e1a10;
+    --bg-dark:       #0a140c;
+    --panel-bg:      #162618;
+    --text:          #a0c098;
+    --text-dim:      #689068;
+    --text-light:    #4a6a4a;
+    --border:        #1e4a2a;
+    --border-light:  #163a20;
+    --accent:        #4aaa5a;
+    --accent-light:  #6ac87a;
+    --accent-dark:   #2a7a3a;
+    --bar-st:        #5a9a5a;
+    --bar-fd:        #b0903a;
+    --bar-wt:        #4a8a9a;
+    --danger:        #b04a3a;
+    --warn:          #b0903a;
+    --shadow:        rgba(0,0,0,.5);
+    --card-shadow:   rgba(0,0,0,.55);
+    --card-suit:     rgba(74,170,90,.08);
+    --card-bg-front: #162618;
+    --card-bg-back:  #0e1a10;
+    --tag-bg:        rgba(74,170,90,.12);
+    --btn-bg:        rgba(74,170,90,.15);
+    --btn-hover:     rgba(74,170,90,.3);
+    --btn-color:     #1e4a2a;
+  }
+
+  /* 生存终端 (Terminal) */
+  body[data-theme="terminal"] {
+    --bg:            #1a1e1a;
+    --bg-dark:       #121612;
+    --panel-bg:      #222622;
+    --text:          #b0d0a0;
+    --text-dim:      #708060;
+    --text-light:    #506040;
+    --border:        #2a3a2a;
+    --border-light:  #1e2e1e;
+    --accent:        #d09030;
+    --accent-light:  #e0a850;
+    --accent-dark:   #a07020;
+    --bar-st:        #6aaa5a;
+    --bar-fd:        #d09030;
+    --bar-wt:        #5a9a8a;
+    --danger:        #c04a2a;
+    --warn:          #d09030;
+    --shadow:        rgba(0,0,0,.5);
+    --card-shadow:   rgba(0,0,0,.55);
+    --card-suit:     rgba(208,144,48,.08);
+    --card-bg-front: #222622;
+    --card-bg-back:  #1a1e1a;
+    --tag-bg:        rgba(208,144,48,.12);
+    --btn-bg:        rgba(208,144,48,.15);
+    --btn-hover:     rgba(208,144,48,.3);
+    --btn-color:     #2a3a2a;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Courier New', 'Consolas', monospace;
+    font-size: 14px;
+    line-height: 1.5;
+    padding: 8px;
+    min-height: 100vh;
+    background-image:
+      repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,.12) 2px, rgba(0,0,0,.12) 4px);
+    transition: background .4s, color .4s;
+  }
+  /* 无真实数据时 body 透明（不占空间） */
+  body.no-data {
+    background: transparent !important;
+    background-image: none !important;
+  }
+
+  /* ===== 主题选择条 ===== */
+  .theme-strip {
+    display: flex;
+    justify-content: flex-end;
+    gap: 4px;
+    margin-bottom: 8px;
+  }
+  .theme-btn {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    border: 2px solid var(--border);
+    cursor: pointer;
+    transition: transform .2s, border-color .2s;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--btn-color);
+  }
+  .theme-btn:hover { transform: scale(1.15); }
+  .theme-btn.active { border-color: var(--accent); box-shadow: 0 0 8px var(--accent); }
+  .theme-btn.active::after {
+    content: '▌';
+    position: absolute;
+    font-size: 12px;
+    color: var(--accent);
+    animation: blink-cursor 1s step-end infinite;
+  }
+  @keyframes blink-cursor {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+  .theme-btn.paper    { background: #3a3628; }
+  .theme-btn.midnight { background: #1e2850; }
+  .theme-btn.autumn   { background: #4a3020; }
+  .theme-btn.forest   { background: #1e4a2a; }
+  .theme-btn.terminal { background: #2a3a2a; }
+
+  /* ===== 顶部信息条 ===== */
+  .top-bar {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+  }
+  .chip {
+    background: var(--panel-bg);
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 3px 8px;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    box-shadow: 0 1px 3px var(--shadow);
+    color: var(--text-dim);
+    transition: background .4s, border .4s;
+  }
+  .chip .v { color: var(--accent-dark); font-weight: 700; }
+
+  /* ===== 面板通用 ===== */
+  .panel {
+    background: var(--panel-bg);
+    border: 2px solid var(--border);
+    border-radius: 6px;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    box-shadow: 0 2px 6px var(--shadow), inset 0 0 12px rgba(0,0,0,.15);
+    transition: background .4s, border .4s, box-shadow .4s;
+  }
+  .panel .hdr {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    padding-bottom: 5px;
+    border-bottom: 2px dashed var(--border-light);
+  }
+  .panel .ttl {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--accent-dark);
+    letter-spacing: .5px;
+  }
+  .panel .sub {
+    font-size: 11px;
+    color: var(--text-dim);
+  }
+
+  /* ===== 属性行 ===== */
+  .attr-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 4px;
+  }
+  .attr-row:last-child { margin-bottom: 0; }
+  .attr-row .icon { width: 18px; text-align: center; font-size: 13px; flex-shrink: 0; }
+  .attr-row .lbl { width: 28px; font-size: 11px; color: var(--text-dim); flex-shrink: 0; }
+  .bar-wrap {
+    flex: 1;
+    height: 10px;
+    background: var(--bg-dark);
+    border-radius: 4px;
+    overflow: hidden;
+    border: 2px solid var(--border-light);
+  }
+  .bar-wrap .fill {
+    height: 100%;
+    border-radius: 5px;
+    transition: width .5s ease;
+  }
+  .bar-wrap .fill.st { background: repeating-linear-gradient(90deg, var(--bar-st), var(--bar-st) 4px, transparent 4px, transparent 6px); }
+  .bar-wrap .fill.fd { background: repeating-linear-gradient(90deg, var(--bar-fd), var(--bar-fd) 4px, transparent 4px, transparent 6px); }
+  .bar-wrap .fill.wt { background: repeating-linear-gradient(90deg, var(--bar-wt), var(--bar-wt) 4px, transparent 4px, transparent 6px); }
+  .attr-row .num {
+    width: 28px;
+    text-align: right;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text);
+    flex-shrink: 0;
+  }
+  .attr-row .num.danger { color: var(--danger); }
+  .attr-row .num.warn { color: var(--warn); }
+  .danger { color: var(--danger); }
+  .warn { color: var(--warn); }
+
+
+  /* ===== 同伴卡片 ===== */
+  .comp-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .comp-card {
+    background: var(--bg);
+    border: 2px solid var(--border-light);
+    border-radius: 4px;
+    padding: 10px 10px 8px;
+  }
+  .comp-card .top { display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; }
+  .comp-card .name { font-size:14px; font-weight:700; color:var(--text); }
+  .comp-card .aff  { font-size:12px; color:var(--text-dim); }
+  .comp-card .health-row {
+    font-size: 11px;
+    margin-bottom: 6px;
+    padding: 2px 6px;
+    background: var(--panel-bg);
+    border-radius: 4px;
+    display: inline-block;
+  }
+  .comp-card .health-row.healthy { color: var(--bar-st); }
+  .comp-card .bars { display:flex; flex-direction:column; gap:3px; }
+  .comp-card .c-row {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .comp-card .c-row .ci { width: 14px; text-align:center; font-size:11px; flex-shrink:0; }
+  .comp-card .c-row .cl { width: 22px; font-size:10px; color:var(--text-dim); flex-shrink:0; }
+  .comp-card .c-row .cw {
+    flex:1; height:7px; background:var(--bg-dark); border-radius:4px; overflow:hidden;
+    border:2px solid var(--border-light);
+  }
+  .comp-card .c-row .cw .cf { height:100%; border-radius:4px; transition:width .5s; }
+  .comp-card .c-row .cw .cf.s { background: repeating-linear-gradient(90deg, var(--bar-st), var(--bar-st) 3px, transparent 3px, transparent 5px); }
+  .comp-card .c-row .cw .cf.f { background: repeating-linear-gradient(90deg, var(--bar-fd), var(--bar-fd) 3px, transparent 3px, transparent 5px); }
+  .comp-card .c-row .cw .cf.w { background: repeating-linear-gradient(90deg, var(--bar-wt), var(--bar-wt) 3px, transparent 3px, transparent 5px); }
+  .comp-card .c-row .cn {
+    width: 22px; text-align:right; font-size:10px; font-weight:600; color:var(--text); flex-shrink:0;
+  }
+  .comp-card .c-row .cn.danger { color:var(--danger); }
+  .comp-card .c-row .cn.warn { color:var(--warn); }
+
+  /* ===== 卡牌区 — 卡牌游戏风格 ===== */
+  .cards-section .hdr { margin-bottom:8px; }
+
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 12px;
+  }
+
+  .card-item {
+    background: var(--card-bg-front);
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 14px 10px 10px;
+    box-shadow: 0 3px 10px var(--card-shadow);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    cursor: default;
+    aspect-ratio: 3 / 4;
+    min-height: 180px;
+    transition: all .15s ease;
+  }
+  /* 修复悬停跳动：去掉 translateY，改用 box-shadow 放大 + 偏移 */
+  .card-item:hover {
+    box-shadow: 0 8px 24px var(--card-shadow);
+    border-color: var(--accent);
+  }
+  /* 点击下压 */
+  .card-item:active {
+    transform: scale(0.97);
+    box-shadow: 0 2px 6px var(--card-shadow);
+  }
+
+  .card-item .card-corner {
+    position: absolute;
+    top: 6px; right: 10px;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text-light);
+    letter-spacing: .5px;
+  }
+
+  .card-item .card-suit {
+    font-size: 26px;
+    line-height: 1;
+    margin-bottom: 4px;
+    opacity: .6;
+  }
+
+  .card-item .card-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text);
+    text-align: center;
+    word-break: break-all;
+    line-height: 1.3;
+    margin-bottom: 2px;
+  }
+
+  .card-item .card-type {
+    font-size: 10px;
+    color: var(--text-light);
+    letter-spacing: .5px;
+    margin-top: auto;
+    padding: 2px 8px;
+    background: var(--tag-bg);
+    border-radius: 3px;
+    font-family: 'Courier New', 'Consolas', monospace;
+  }
+
+  .card-item .card-desc {
+    font-size: 10px;
+    color: var(--text-dim);
+    text-align: center;
+    line-height: 1.3;
+    margin: 2px 0;
+    padding: 0 2px;
+    word-break: break-word;
+  }
+
+  .card-item .card-count {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    background: var(--accent);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    min-width: 22px;
+    height: 22px;
+    border-radius: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 6px;
+    box-shadow: 0 2px 6px rgba(0,0,0,.25);
+  }
+
+  .card-empty {
+    color: var(--text-light);
+    font-size: 12px;
+    font-style: italic;
+    padding: 24px 0;
+    text-align: center;
+    grid-column: 1 / -1;
+  }
+
+  /* ===== 背包卡片滚动容器 ===== */
+  .cards-scroll {
+    max-height: min(55vh, 420px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 4px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+  .cards-scroll::-webkit-scrollbar { width: 5px; }
+  .cards-scroll::-webkit-scrollbar-track { background: transparent; }
+  .cards-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  .cards-scroll::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+  /* ===== 响应式：移动端适配 ===== */
+  @media (max-width: 480px) {
+    body { padding: 6px; font-size: 13px; }
+    .theme-btn { width: 20px; height: 20px; }
+    .chip { font-size: 11px; padding: 2px 6px; }
+    .panel { padding: 8px 10px; }
+    .panel .ttl { font-size: 13px; }
+    .comp-grid { grid-template-columns: 1fr 1fr; gap: 5px; }
+    .comp-card { padding: 8px; }
+    .comp-card .name { font-size: 13px; }
+    .cards-grid {
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 8px;
+    }
+    .card-item { min-height: 150px; padding: 10px 8px 8px; }
+    .cards-scroll { max-height: min(45vh, 320px); }
+    .card-item .card-suit { font-size: 22px; }
+    .card-item .card-name { font-size: 12px; }
+  }
+
+  @media (max-width: 360px) {
+    .cards-grid { grid-template-columns: repeat(2, 1fr); gap: 6px; }
+    .cards-scroll { max-height: min(40vh, 260px); }
+    .card-item { min-height: 130px; }
+    .comp-grid { grid-template-columns: 1fr; }
+  }
+</style>
+
+<div id="app"></div>
+
+<script>
+(function(){
+  // ====== 初始状态 ======
+  var S = {
+    系统:{天数:1,时间段:'上午',天气:'阴',当前位置:'坠机海滩',_上次结算天数:1},
+    玩家状态:{体力:85,饱食度:75,水分:70,健康状态:{等级:'健康',描述:''}},
+    樱庭雪乃:{体力:80,饱食度:75,水分:70,好感度:5,健康状态:{等级:'健康',描述:''}},
+    白石莉香:{体力:90,饱食度:80,水分:75,好感度:10,健康状态:{等级:'健康',描述:''}},
+    藤原真白:{体力:85,饱食度:75,水分:70,好感度:3,健康状态:{等级:'健康',描述:''}},
+    水无月遥:{体力:70,饱食度:75,水分:70,好感度:5,健康状态:{等级:'健康',描述:''}},
+    背包:{卡牌:[{名称:'矿泉水',数量:3,描述:'饮用：水分+30'}]}
+  };
+
+  var el = document.getElementById('app');
+  var _lastSnapshot = '';  // 用于对比数据是否变化
+  var _hasLiveData = false; // 是否接收到真实游戏数据
+
+  // ====== MVU 系统工具函数 ======
+  function waitGlobalInitialized(name, timeout) {
+    if (timeout === undefined) timeout = 5000;
+    var start = Date.now();
+    return new Promise(function(resolve, reject){
+      function check() {
+        if (typeof window[name] !== 'undefined') return resolve();
+        if (Date.now() - start > timeout) return reject(new Error('Timeout waiting for ' + name));
+        setTimeout(check, 100);
+      }
+      check();
+    });
+  }
+
+  function populateData() {
+    try {
+      var all_vars = (typeof getAllVariables === 'function') ? getAllVariables() : {};
+      var statData = all_vars.stat_data || null;
+      if (!statData) return;
+      function mergeObj(a, b) {
+        var o = {};
+        for (var k in a) o[k] = a[k];
+        for (var k in b) {
+          if (b[k] && typeof b[k]==='object' && !Array.isArray(b[k]) && a[k] && typeof a[k]==='object' && !Array.isArray(a[k])) {
+            o[k] = mergeObj(a[k], b[k]);
+          } else {
+            o[k] = b[k];
+          }
+        }
+        return o;
+      }
+      S = mergeObj(S, statData);
+      _hasLiveData = true;
+      R_DEBOUNCE();
+    } catch(e){}
+  }
+
+  // 防抖：数据没变就不重渲染（解决悬停跳动问题 #1）
+  var _debounceTimer = null;
+  function R_DEBOUNCE() {
+    if (_debounceTimer) return;  // 已经排了一帧，跳过
+    _debounceTimer = setTimeout(function(){
+      _debounceTimer = null;
+      R();
+    }, 16); // 约 1 帧
+  }
+
+  // ====== 颜色主题 ======
+  var THEMES = [
+    { key:'paper',    name:'纸墨', emoji:'📜' },
+    { key:'midnight', name:'夜蓝', emoji:'🌙' },
+    { key:'autumn',   name:'秋枫', emoji:'🍁' },
+    { key:'forest',   name:'翡翠', emoji:'🌿' },
+    { key:'terminal', name:'终端', emoji:'💻' },
+  ];
+  var _savedTheme = localStorage.getItem('desert_island_theme') || 'paper';
+
+  function applyTheme(key) {
+    document.body.setAttribute('data-theme', key);
+    _savedTheme = key;
+    try { localStorage.setItem('desert_island_theme', key); } catch(e){}
+    // 刷新主题按钮高亮
+    var btns = document.querySelectorAll('.theme-btn');
+    for (var i=0; i<btns.length; i++) {
+      btns[i].classList.toggle('active', btns[i].dataset.theme === key);
+    }
+  }
+
+  // ====== 工具函数 ======
+  function clamp(v, min, max) { return Math.max(min, Math.min(max, v)); }
+  function pct(v, max) { return clamp((v||0)/max*100, 0, 100).toFixed(0)+'%'; }
+  function cssCls(v, warn, crit) {
+    if ((v||0) <= crit) return 'danger';
+    if ((v||0) <= warn) return 'warn';
+    return '';
+  }
+
+  // ====== 卡牌类型图标映射（7种通用图标） ======
+  var CARD_TYPE_ICON = {
+    '消耗品':'💧',
+    '食物':'🍖',
+    '材料':'📦',
+    '工具':'🔧',
+    '医疗':'💊',
+    '用品':'🎒',
+    '特殊':'⭐'
+  };
+
+  // 根据卡牌名称判断类型（关键词匹配）
+  function cardType(name) {
+    if (/水|饮料|奶|椰子/.test(name)) return '消耗品';
+    if (/食|餐|肉|鱼|果|饼|贝|蟹|蛋/.test(name)) return '食物';
+    if (/木|石|叶|藤|竹|沙|土|黏土|纤|兽皮/.test(name)) return '材料';
+    if (/斧|刀|矛|竿|筒|索|绳|火种|篝火/.test(name)) return '工具';
+    if (/急救|药|绷带|消毒|草药/.test(name)) return '医疗';
+    if (/布|衣|毯|塑料/.test(name)) return '用品';
+    if (/信号|睡眠|水壶/.test(name)) return '特殊';
+    return '材料';
+  }
+
+  // 健康状态图标
+  var HEALTH_ICON = { '健康':'💪','轻伤':'🩹','重伤':'🆘','濒死':'💀','生病':'🤒' };
+  var HEALTH_COLOR = { '健康':'','轻伤':'warn','重伤':'danger','濒死':'danger','生病':'warn' };
+
+  // ====== 渲染 ======
+  function R(){
+    // 没有真实数据 → 什么都不渲染
+    if (!_hasLiveData) {
+      el.innerHTML = '';
+      document.body.classList.add('no-data');
+      return;
+    }
+    document.body.classList.remove('no-data');
+    var d = S;
+    var sys = d['系统'] || {};
+    var p = d['玩家状态'] || {};
+    var pH = p.健康状态 || {};
+    var girls = [
+      {n:'樱庭雪乃', st:d.樱庭雪乃?.体力||0, fd:d.樱庭雪乃?.饱食度||0, wt:d.樱庭雪乃?.水分||0, a:d.樱庭雪乃?.好感度||0, h:d.樱庭雪乃?.健康状态||{}},
+      {n:'白石莉香', st:d.白石莉香?.体力||0, fd:d.白石莉香?.饱食度||0, wt:d.白石莉香?.水分||0, a:d.白石莉香?.好感度||0, h:d.白石莉香?.健康状态||{}},
+      {n:'藤原真白', st:d.藤原真白?.体力||0, fd:d.藤原真白?.饱食度||0, wt:d.藤原真白?.水分||0, a:d.藤原真白?.好感度||0, h:d.藤原真白?.健康状态||{}},
+      {n:'水无月遥', st:d.水无月遥?.体力||0, fd:d.水无月遥?.饱食度||0, wt:d.水无月遥?.水分||0, a:d.水无月遥?.好感度||0, h:d.水无月遥?.健康状态||{}}
+    ];
+    // 数据快照对比：没变化就不重建 DOM（根治滚动卡顿）
+    var _snap = JSON.stringify(d) + '|' + _savedTheme;
+    if (_snap === _lastSnapshot && _hasLiveData) {
+      return;
+    }
+    _lastSnapshot = _snap;
+
+    var cards = Array.isArray(d.背包?.卡牌) ? d.背包.卡牌 : [];
+
+    var h = '';
+
+    // ====== 主题切换 ======
+    h += '<div class="theme-strip">';
+    for (var ti=0; ti<THEMES.length; ti++) {
+      var th = THEMES[ti];
+      h += '<div class="theme-btn '+th.key+' '+(th.key===_savedTheme?'active':'')+'" data-theme="'+th.key+'" title="'+th.name+'" onclick="window._setTheme(\''+th.key+'\')"></div>';
+    }
+    h += '</div>';
+
+    // ====== 顶部信息条 ======
+    h += '<div class="top-bar">';
+    h += '<div class="chip">📅 第<span class="v">'+sys.天数+'</span>日</div>';
+    h += '<div class="chip">🕐 <span class="v">'+sys.时间段+'</span></div>';
+    h += '<div class="chip">'+(sys.天气==='晴'?'☀️':sys.天气==='阴'?'☁️':sys.天气==='雨'?'🌧️':sys.天气==='暴风雨'?'⛈️':'🌤️')+' <span class="v">'+sys.天气+'</span></div>';
+    h += '<div class="chip">📍 <span class="v">'+sys.当前位置+'</span></div>';
+    h += '</div>';
+
+    // ====== 主角面板 ======
+    h += '<div class="panel">';
+    h += '<div class="hdr"><span class="ttl">🏝️ 主角 <span class="'+(HEALTH_COLOR[pH.等级]||'')+'">'+(HEALTH_ICON[pH.等级]||'')+' '+pH.等级+'</span></span></div>';
+    h += attrRow('❤️','体力','st',p.体力,100,30,10);
+    h += attrRow('🍞','饱食','fd',p.饱食度,100,30,10);
+    h += attrRow('💧','水分','wt',p.水分,100,30,10);
+    h += '</div>';
+
+    // ====== 同伴面板 ======
+    h += '<div class="panel">';
+    h += '<div class="hdr"><span class="ttl">👥 同伴</span><span class="sub">好感度</span></div>';
+    h += '<div class="comp-grid">';
+    for (var i=0; i<girls.length; i++){
+      var g = girls[i];
+      var heart = g.a>=80?'❤️':g.a>=50?'💛':g.a>=20?'💚':'🤍';
+      var hCls = HEALTH_COLOR[g.h.等级] || '';
+      var hIco = HEALTH_ICON[g.h.等级] || '';
+      h += '<div class="comp-card">';
+      h += '<div class="top"><span class="name">'+g.n+'</span><span class="aff">'+heart+' '+g.a+'</span></div>';
+      h += '<div class="health-row '+(g.h.等级==='健康'?'healthy':hCls)+'">'+hIco+' '+g.h.等级+(g.h.描述?' · '+g.h.描述:'')+'</div>';
+      h += '<div class="bars">';
+      h += compRow('❤️','体力','s',g.st);
+      h += compRow('🍞','饱食','f',g.fd);
+      h += compRow('💧','水分','w',g.wt);
+      h += '</div></div>';
+    }
+    h += '</div></div>';
+
+    // ====== 卡牌区（卡牌游戏风格） ======
+    h += '<div class="panel cards-section">';
+    h += '<div class="hdr"><span class="ttl">🃏 背包</span><span class="sub">'+(cards.length>0?cards.length+' 张':'空')+'</span></div>';
+    h += '<div class="cards-scroll"><div class="cards-grid">';
+    if (cards.length > 0) {
+      for (var j=0; j<cards.length; j++) {
+        var c = cards[j];
+        var cName = (typeof c === 'string') ? c.split('x')[0] : (c.名称 || '');
+        var cCount = (typeof c === 'string') ? (parseInt(c.split('x')[1],10)||1) : (c.数量||1);
+        var cDesc = (typeof c === 'string') ? '' : (c.描述||'');
+        var type = cardType(cName);
+        var icon = CARD_TYPE_ICON[type] || '📄';
+        h += '<div class="card-item">';
+        h += '<div class="card-corner">✦</div>';
+        h += '<div class="card-suit">'+icon+'</div>';
+        h += '<div class="card-name">'+cName+'</div>';
+        if (cDesc) h += '<div class="card-desc">'+cDesc+'</div>';
+        h += '<div class="card-type">'+type+'</div>';
+        if (cCount > 1) h += '<div class="card-count">×'+cCount+'</div>';
+        h += '</div>';
+      }
+    } else {
+      h += '<div class="card-empty">📭 背包空空，快去探索吧</div>';
+    }
+    h += '</div></div></div>';
+
+    // 保存背包滚动位置
+    var _scrollData = (function(){
+      var el = document.querySelector('.cards-scroll');
+      return el ? { top: el.scrollTop } : null;
+    })();
+
+    el.innerHTML = h;
+
+    // 恢复背包滚动位置
+    if (_scrollData) {
+      var newScroll = document.querySelector('.cards-scroll');
+      if (newScroll) newScroll.scrollTop = _scrollData.top;
+    }
+
+    // 主题按钮事件绑定（用 onclick 全局函数）
+    window._setTheme = function(key) {
+      applyTheme(key);
+    };
+    // 确保当前主题的按钮高亮
+    applyTheme(_savedTheme);
+  }
+
+  function attrRow(ico, lbl, cls, val, max, warn, crit) {
+    return '<div class="attr-row">'
+      + '<span class="icon">'+ico+'</span>'
+      + '<span class="lbl">'+lbl+'</span>'
+      + '<div class="bar-wrap"><div class="fill '+cls+'" style="width:'+pct(val,max)+'"></div></div>'
+      + '<span class="num '+cssCls(val,warn,crit)+'">'+val+'</span>'
+      + '</div>';
+  }
+
+  function compRow(ico, lbl, cls, val) {
+    return '<div class="c-row">'
+      + '<span class="ci">'+ico+'</span>'
+      + '<span class="cl">'+lbl+'</span>'
+      + '<div class="cw"><div class="cf '+cls+'" style="width:'+pct(val,100)+'"></div></div>'
+      + '<span class="cn '+cssCls(val,30,10)+'">'+val+'</span>'
+      + '</div>';
+  }
+
+  // ====== postMessage 备选通道 ======
+  window.addEventListener('message', function(ev){
+    if (!ev.data) return;
+    try {
+      var d = typeof ev.data === 'string' ? JSON.parse(ev.data) : ev.data;
+      var u = null;
+      if (d.type === 'mvu_update' && d.payload) u = d.payload;
+      else if (d.stat_data) u = d.stat_data;
+      else if (d['系统'] || d['玩家状态']) u = d;
+      if (u) {
+        function mergeObj(a, b) {
+          var o = {};
+          for (var k in a) o[k] = a[k];
+          for (var k in b) {
+            if (b[k] && typeof b[k]==='object' && !Array.isArray(b[k]) && a[k] && typeof a[k]==='object' && !Array.isArray(a[k])) {
+              o[k] = mergeObj(a[k], b[k]);
+            } else {
+              o[k] = b[k];
+            }
+          }
+          return o;
+        }
+        S = mergeObj(S, u);
+        _hasLiveData = true;
+        R_DEBOUNCE();
+      }
+    } catch(e){}
+  });
+
+  // ====== 初始化 ======
+  function init() {
+    // 数据未到之前隐藏背景
+    document.body.classList.add('no-data');
+    // 恢复主题
+    applyTheme(_savedTheme);
+
+    waitGlobalInitialized('Mvu').then(function(){
+      populateData();
+      setInterval(populateData, 1500);
+    }).catch(function(){
+      try { window.parent && window.parent.postMessage({type:'request_stat_data'},'*'); } catch(e){}
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+</script>
+</body>
+</html>
