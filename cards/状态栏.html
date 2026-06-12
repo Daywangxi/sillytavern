@@ -262,22 +262,28 @@
   .attr-row:last-child { margin-bottom: 0; }
   .attr-row .icon { width: 18px; text-align: center; font-size: 13px; flex-shrink: 0; }
   .attr-row .lbl { width: 28px; font-size: 11px; color: var(--text-dim); flex-shrink: 0; }
+  /* 分段刻度属性条：100 个等宽小格子，固定 1px 间距 */
   .bar-wrap {
     flex: 1;
     height: 10px;
     background: var(--bg-dark);
     border-radius: 0;
-    overflow: hidden;
     border: 2px solid var(--border-light);
+    display: flex;
+    gap: 1px;
+    padding: 1px;
+    align-items: stretch;
+    overflow: hidden;
   }
-  .bar-wrap .fill {
-    height: 100%;
-    border-radius: 0;
-    transition: width .5s ease;
+  .bar-wrap .cell {
+    flex: 1 1 0;
+    min-width: 0;
+    background: transparent;
+    transition: background .15s ease;
   }
-  .bar-wrap .fill.st { background: repeating-linear-gradient(90deg, var(--bar-st) 0, var(--bar-st) 4px, transparent 4px, transparent 5px); }
-  .bar-wrap .fill.fd { background: repeating-linear-gradient(90deg, var(--bar-fd) 0, var(--bar-fd) 4px, transparent 4px, transparent 5px); }
-  .bar-wrap .fill.wt { background: repeating-linear-gradient(90deg, var(--bar-wt) 0, var(--bar-wt) 4px, transparent 4px, transparent 5px); }
+  .bar-wrap .cell.on-st { background: var(--bar-st); }
+  .bar-wrap .cell.on-fd { background: var(--bar-fd); }
+  .bar-wrap .cell.on-wt { background: var(--bar-wt); }
   .attr-row .num {
     width: 28px;
     text-align: right;
@@ -327,11 +333,15 @@
   .comp-card .c-row .cw {
     flex:1; height:7px; background:var(--bg-dark); border-radius:0; overflow:hidden;
     border:2px solid var(--border-light);
+    display: flex; gap: 1px; padding: 1px; align-items: stretch;
   }
-  .comp-card .c-row .cw .cf { height:100%; border-radius:0; transition:width .5s; }
-  .comp-card .c-row .cw .cf.s { background: repeating-linear-gradient(90deg, var(--bar-st) 0, var(--bar-st) 4px, transparent 4px, transparent 5px); }
-  .comp-card .c-row .cw .cf.f { background: repeating-linear-gradient(90deg, var(--bar-fd) 0, var(--bar-fd) 4px, transparent 4px, transparent 5px); }
-  .comp-card .c-row .cw .cf.w { background: repeating-linear-gradient(90deg, var(--bar-wt) 0, var(--bar-wt) 4px, transparent 4px, transparent 5px); }
+  .comp-card .c-row .cw .cell {
+    flex: 1 1 0; min-width: 0; background: transparent;
+    transition: background .15s ease;
+  }
+  .comp-card .c-row .cw .cell.on-s { background: var(--bar-st); }
+  .comp-card .c-row .cw .cell.on-f { background: var(--bar-fd); }
+  .comp-card .c-row .cw .cell.on-w { background: var(--bar-wt); }
   .comp-card .c-row .cn {
     width: 22px; text-align:right; font-size:10px; font-weight:600; color:var(--text); flex-shrink:0;
   }
@@ -735,19 +745,33 @@
   }
 
   function attrRow(ico, lbl, cls, val, max, warn, crit) {
+    // 100 个分段小格子：按当前值点亮前 N 格
+    var lit = clamp(Math.round((val||0)/max*100), 0, 100);
+    var cells = '';
+    for (var i = 0; i < 100; i++) {
+      cells += '<div class="cell' + (i < lit ? ' on-' + cls : '') + '"></div>';
+    }
     return '<div class="attr-row">'
       + '<span class="icon">'+ico+'</span>'
       + '<span class="lbl">'+lbl+'</span>'
-      + '<div class="bar-wrap"><div class="fill '+cls+'" style="width:'+pct(val,max)+'"></div></div>'
+      + '<div class="bar-wrap">' + cells + '</div>'
       + '<span class="num '+cssCls(val,warn,crit)+'">'+val+'</span>'
       + '</div>';
   }
 
   function compRow(ico, lbl, cls, val) {
+    // 同伴卡片属性条空间较窄（约 120px 宽），100 格会变成不可见的细线
+    // 这里用 20 个等分小格子（每格代表 5 点），保持相同的"分段刻度"视觉风格
+    var total = 20;
+    var lit = clamp(Math.round((val||0)/100*total), 0, total);
+    var cells = '';
+    for (var i = 0; i < total; i++) {
+      cells += '<div class="cell' + (i < lit ? ' on-' + cls : '') + '"></div>';
+    }
     return '<div class="c-row">'
       + '<span class="ci">'+ico+'</span>'
       + '<span class="cl">'+lbl+'</span>'
-      + '<div class="cw"><div class="cf '+cls+'" style="width:'+pct(val,100)+'"></div></div>'
+      + '<div class="cw">' + cells + '</div>'
       + '<span class="cn '+cssCls(val,30,10)+'">'+val+'</span>'
       + '</div>';
   }
